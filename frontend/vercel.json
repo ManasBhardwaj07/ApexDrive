@@ -1,20 +1,7 @@
 {
   "version": 2,
-  "name": "golf-platform-frontend",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
-    }
-  ],
   "routes": [
     { "src": "/assets/(.*)", "dest": "/assets/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "env": {
-    "VITE_SUPABASE_URL": "@supabase_url",
-    "VITE_SUPABASE_ANON_KEY": "@supabase_anon_key",
-    "VITE_API_URL": "@api_url"
-  }
+  ]
 }
