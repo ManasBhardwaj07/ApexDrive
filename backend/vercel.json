@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "name": "golf-platform-backend",
   "builds": [
     {
       "src": "server.js",
@@ -8,18 +7,9 @@
     }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "/server.js" }
-  ],
-  "env": {
-    "NODE_ENV": "production",
-    "SUPABASE_URL": "@supabase_url",
-    "SUPABASE_ANON_KEY": "@supabase_anon_key",
-    "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_role_key",
-    "STRIPE_SECRET_KEY": "@stripe_secret_key",
-    "STRIPE_WEBHOOK_SECRET": "@stripe_webhook_secret",
-    "STRIPE_MONTHLY_PRICE_ID": "@stripe_monthly_price_id",
-    "STRIPE_YEARLY_PRICE_ID": "@stripe_yearly_price_id",
-    "FRONTEND_URL": "@frontend_url",
-    "JWT_SECRET": "@jwt_secret"
-  }
+    {
+      "src": "/(.*)",
+      "dest": "server.js"
+    }
+  ]
 }
