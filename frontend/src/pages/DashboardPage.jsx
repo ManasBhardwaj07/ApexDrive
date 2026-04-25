@@ -420,7 +420,7 @@ function ScoreSection({ scores, onRefresh, loading }) {
         await api.scores.update(editId, { score: form.score, notes: form.notes })
         toast.success('Score updated')
       } else {
-        await api.scores.add(form)
+        await api.scores.create(form) // <--- FIXED HERE
         toast.success('Score added!')
       }
       onRefresh()
@@ -445,7 +445,7 @@ function ScoreSection({ scores, onRefresh, loading }) {
   const deleteScore = async (id) => {
     if (!confirm('Delete this score?')) return
     try {
-      await api.scores.delete(id)
+      await api.scores.remove(id) // <--- FIXED HERE
       toast.success('Score deleted')
       onRefresh()
     } catch (err) {
