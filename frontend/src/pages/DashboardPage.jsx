@@ -71,6 +71,9 @@ export default function DashboardPage() {
 
     toast.success('Payment received! Activating your subscription…')
 
+    // THE KILL SWITCH: Erase '?subscription=success' from the browser URL instantly
+    window.history.replaceState(null, '', window.location.pathname)
+
     let attempts     = 0
     const MAX        = 8
     const INTERVAL   = 2000 
@@ -103,7 +106,6 @@ export default function DashboardPage() {
 
     return () => clearInterval(interval)
   }, [params, refreshProfile])
-
   useEffect(() => {
     if (!isSubscribed) return
     loadScores()
