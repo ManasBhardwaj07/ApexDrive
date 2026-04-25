@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   Target, Trophy, Heart, TrendingUp, Plus, Pencil, Trash2,
@@ -31,7 +31,7 @@ export default function DashboardPage() {
   const [scoresLoading, setScoresLoading]   = useState(false)   
   const [entriesLoading, setEntriesLoading] = useState(false)   
   const [showSettings, setShowSettings]     = useState(false)
-  const [params] = useSearchParams()
+  const [isConfirming, setIsConfirming]     = useState(false)
 
   const isMounted = useRef(true)
   useEffect(() => {
@@ -66,12 +66,16 @@ export default function DashboardPage() {
   }, [])
 
   useEffect(() => {
-    const isSuccess = params.get('subscription') === 'success'
+    // 1. Read directly from the window (Bypasses React Router memory)
+    const query = new URLSearchParams(window.location.search)
+    const isSuccess = query.get('subscription') === 'success'
+    
     if (!isSuccess) return
 
+    setIsConfirming(true)
     toast.success('Payment received! Activating your subscription…')
 
-    // THE KILL SWITCH: Erase '?subscription=success' from the browser URL instantly
+    // 2. THE KILL SWITCH: Erase '?subscription=success' from the browser URL instantly
     window.history.replaceState(null, '', window.location.pathname)
 
     let attempts     = 0
@@ -105,7 +109,8 @@ export default function DashboardPage() {
     }, INTERVAL)
 
     return () => clearInterval(interval)
-  }, [params, refreshProfile])
+  }, [refreshProfile])
+
   useEffect(() => {
     if (!isSubscribed) return
     loadScores()
@@ -183,7 +188,7 @@ export default function DashboardPage() {
             </motion.div>
           )}
 
-          {params.get('subscription') === 'success' && !isSubscribed && (
+          {isConfirming && !isSubscribed && (
             <motion.div variants={itemVariants} className="mt-6 flex items-center gap-3 p-5 rounded-2xl bg-gold-500/10 border border-gold-500/30 shadow-lg shadow-gold-500/5">
               <Loader2 className="w-5 h-5 text-gold-400 animate-spin flex-shrink-0" />
               <p className="text-sm text-gold-400 font-body font-500 tracking-wide">
@@ -192,7 +197,7 @@ export default function DashboardPage() {
             </motion.div>
           )}
 
-          {!isSubscribed && !params.get('subscription') ? (
+          {!isSubscribed && !isConfirming ? (
             <motion.div variants={itemVariants}>
               <SubscribePrompt />
             </motion.div>
