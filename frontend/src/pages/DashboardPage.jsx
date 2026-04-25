@@ -259,7 +259,8 @@ function SettingsDrawer({ profile, onClose, onSaved }) {
     } finally { setSaving(false) }
   }
 
-  const baseAmount  = profile.subscription_plan === 'yearly' ? 4999 : 499
+  const isYearly    = profile?.subscription_plan?.toLowerCase() === 'yearly'
+  const baseAmount  = isYearly ? 4999 : 499
   const donationAmt = Math.round(baseAmount * form.charity_contribution_percent / 100)
 
   return (
@@ -327,7 +328,7 @@ function SettingsDrawer({ profile, onClose, onSaved }) {
                   <p className="font-display text-3xl font-400 text-coral-400 mt-1">
                     ₹{donationAmt.toLocaleString('en-IN')}
                     <span className="text-sm font-body text-cream-100/30 ml-2">
-                      per {profile.subscription_plan === 'yearly' ? 'year' : 'month'}
+                      per {isYearly ? 'year' : 'month'}
                     </span>
                   </p>
                 </div>
@@ -420,7 +421,7 @@ function ScoreSection({ scores, onRefresh, loading }) {
         await api.scores.update(editId, { score: form.score, notes: form.notes })
         toast.success('Score updated')
       } else {
-        await api.scores.add(form)
+        await api.scores.create(form)
         toast.success('Score added!')
       }
       onRefresh()
@@ -445,7 +446,7 @@ function ScoreSection({ scores, onRefresh, loading }) {
   const deleteScore = async (id) => {
     if (!confirm('Delete this score?')) return
     try {
-      await api.scores.delete(id)
+      await api.scores.remove(id)
       toast.success('Score deleted')
       onRefresh()
     } catch (err) {
