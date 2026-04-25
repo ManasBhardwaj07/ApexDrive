@@ -777,9 +777,15 @@ function CharityPanel({ profile, onOpenSettings }) {
   const charity = profile?.charity
   const isActive = profile?.subscription_status === 'active'
 
+  // Dynamic Personal Impact Calculation using the correct Profile column
+  const isYearly    = profile?.subscription_plan?.toLowerCase() === 'yearly'
+  const baseAmount  = isYearly ? 4999 : 499
+  const percent     = profile?.charity_contribution_percent || 10
+  const donationAmt = Math.round((baseAmount * percent) / 100)
+  const periodText  = isYearly ? 'per year' : 'per month'
+
   return (
     <div className="card-gold p-8 shadow-2xl shadow-gold-500/10 rounded-3xl relative overflow-hidden group">
-      {/* Subtle background glow */}
       <div className="absolute -top-24 -right-24 w-48 h-48 bg-coral-500/10 rounded-full blur-3xl group-hover:bg-coral-500/20 transition-all duration-700 pointer-events-none"></div>
       
       <div className="flex items-center justify-between mb-6 relative z-10">
@@ -801,15 +807,16 @@ function CharityPanel({ profile, onOpenSettings }) {
           
           <div className="flex items-center justify-between p-4 rounded-2xl bg-forest-950/60 border border-white/5 shadow-inner mb-4">
             <span className="text-sm text-cream-100/50 font-body">Allocation</span>
-            <span className="font-display text-2xl font-400 text-coral-500">{profile.charity_contribution_percent || 10}%</span>
+            <span className="font-display text-2xl font-400 text-coral-500">{percent}%</span>
           </div>
           
-          {charity.total_received > 0 && (
-            <div className="mt-4 text-center p-4 rounded-2xl bg-white/[0.02] border border-white/[0.03]">
-              <p className="text-xs font-mono text-gold-400/50 uppercase tracking-widest mb-1">Global Platform Yield</p>
-              <p className="font-display text-3xl font-300 text-gold-400">₹{charity.total_received.toLocaleString('en-IN')}</p>
+          <div className="mt-4 text-center p-4 rounded-2xl bg-white/[0.02] border border-white/[0.03]">
+            <p className="text-xs font-mono text-gold-400/50 uppercase tracking-widest mb-1">Your Projected Impact</p>
+            <div className="flex items-baseline justify-center gap-1">
+              <p className="font-display text-3xl font-300 text-gold-400">₹{donationAmt.toLocaleString('en-IN')}</p>
+              <span className="text-sm font-body text-gold-400/50">{periodText}</span>
             </div>
-          )}
+          </div>
         </div>
       ) : (
         <div className="text-center py-8 relative z-10">
