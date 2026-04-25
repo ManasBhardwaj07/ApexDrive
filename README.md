@@ -6,6 +6,19 @@ A subscription-driven web application combining **golf performance tracking**, a
 
 ---
 
+🛠️ Tech Stack
+Frontend: React, Vite, Tailwind CSS, Framer Motion
+
+Backend: Node.js, Express.js
+
+Database & Auth: Supabase (PostgreSQL, Row Level Security, Storage)
+
+Payments: Stripe Checkout & Webhooks
+
+Hosting: Vercel (Serverless Functions & Static Hosting)
+
+---
+
 ## 🗂️ Project Structure
 
 ```
@@ -132,28 +145,10 @@ npm run dev
 
 ---
 
-## 🚀 Step 5 — Deploy to Vercel
+🚀 Live Environments
+Frontend Application: https://apex-drive-frontend.vercel.app
 
-> ⚠️ Use a **brand new Vercel account** — submission requirement.
-
-```bash
-npm install -g vercel
-
-# Deploy backend
-cd backend
-vercel login
-vercel --prod
-
-# Deploy frontend
-cd ../frontend
-vercel --prod
-```
-
-In each Vercel project's **Settings → Environment Variables**, add all variables from `.env.example`.
-
-After deploying frontend, update backend's `FRONTEND_URL` env var to your frontend's Vercel URL, then redeploy backend.
-
----
+Backend API: https://apex-drive-two.vercel.app
 
 ## 🧪 Full Testing Checklist
 
