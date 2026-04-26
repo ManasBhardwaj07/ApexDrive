@@ -691,9 +691,6 @@ function DrawEntriesSection({ entries, onRefresh, loading }) {
                     <p className="font-body font-500 text-cream-100 text-lg">
                       {MONTHS[(draw?.draw_month || 1) - 1]} {draw?.draw_year}
                     </p>
-                    <p className="text-sm text-cream-100/40 font-mono mt-1 tracking-wider">
-                      DATA: [{entry.entry_numbers?.join(', ') || '—'}]
-                    </p>
                   </div>
                   <div className="text-right">
                     {entry.is_winner ? (

@@ -37,18 +37,21 @@ function HeroSection() {
         <div className="absolute top-20 right-0 w-[600px] h-[600px] rounded-full bg-gold-500/5 blur-3xl" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-forest-700/20 blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-white/3" />
-        {/* Floating score numbers */}
-        {[{n:24,x:'5%',y:'25%',d:0},{n:31,x:'90%',y:'15%',d:1},{n:18,x:'88%',y:'70%',d:2},{n:40,x:'3%',y:'72%',d:0.5}].map(({n,x,y,d}) => (
-          <motion.div
-            key={n}
-            className="absolute font-display text-6xl font-300 text-white/3 select-none"
-            style={{ left: x, top: y }}
-            animate={{ y: [0, -15, 0] }}
-            transition={{ duration: 6+d, repeat: Infinity, delay: d, ease: 'easeInOut' }}
-          >
-            {n}
-          </motion.div>
-        ))}
+        
+        {/* Floating score numbers - Wrapped in a hidden parent to block Framer Motion overrides on mobile */}
+        <div className="hidden md:block">
+          {[{n:24,x:'5%',y:'25%',d:0},{n:31,x:'90%',y:'15%',d:1},{n:18,x:'88%',y:'70%',d:2},{n:40,x:'3%',y:'72%',d:0.5}].map(({n,x,y,d}) => (
+            <motion.div
+              key={n}
+              className="absolute font-display text-6xl font-300 text-white/3 select-none"
+              style={{ left: x, top: y }}
+              animate={{ y: [0, -15, 0] }}
+              transition={{ duration: 6+d, repeat: Infinity, delay: d, ease: 'easeInOut' }}
+            >
+              {n}
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20">
@@ -114,7 +117,7 @@ function HeroSection() {
 
 /* ── IMPACT / CHARITIES ────────────────────────────────────── */
 function ImpactSection({ charities }) {
-  const { user } = useAuth(); // Ensure you are pulling 'user' from your AuthContext
+  const { user } = useAuth();
 
   return (
     <section className="py-24 bg-gradient-to-b from-transparent to-forest-900/30">
@@ -173,9 +176,8 @@ function ImpactSection({ charities }) {
                 </Link>
                 <button 
                   onClick={async (e) => {
-                    e.stopPropagation(); // Prevent card-click if you add one later
+                    e.stopPropagation();
                     try {
-                      // Passes userId if logged in, otherwise undefined for Guest Flow
                       const res = await api.payments.donate({ 
                         charityId: c.id, 
                         amount: 500,
