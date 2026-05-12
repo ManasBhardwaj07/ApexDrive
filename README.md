@@ -1,4 +1,4 @@
-# 🏌️ Digital Heroes Golf Reward Platform — FINAL VERSION
+#  Golf Reward Platform 
 
 > Play golf. Win rewards. Change lives.
 
